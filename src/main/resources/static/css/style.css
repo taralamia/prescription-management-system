@@ -1,0 +1,203 @@
+/* Medical Prescription App - Enhanced Card Design */
+:root {
+    --powder-blue: #b0e0e6;
+    --ocean-blue: #0077be;
+    --light-blue: #e6f3f7;
+    --dark-blue: #005a87;
+    --card-blue: #f8fdff;
+    --white: #ffffff;
+    --gray: #6c757d;
+    --text-dark: #2c3e50;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, var(--powder-blue) 0%, #87ceeb 50%, var(--ocean-blue) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+}
+
+.card-surface {
+    background: var(--card-blue);
+    border-radius: 20px;
+    box-shadow:
+            0 20px 40px rgba(0, 119, 190, 0.15),
+            0 8px 16px rgba(0, 119, 190, 0.1),
+            inset 0 1px 0 var(--white);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 360px; /* Keep compact size */
+    border: 1px solid rgba(176, 224, 230, 0.3);
+    animation: cardAppear 0.6s ease-out;
+    margin: 0.5rem 0;
+}
+
+.medical-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.medical-icon {
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.medical-header h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.medical-subtitle {
+    font-size: 0.95rem;
+    color: var(--gray);
+    font-weight: 400;
+}
+
+/* Alert Messages */
+.alert {
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+    border: 1px solid transparent;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-color: #b1dfbb;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+    border-color: #f1b0b7;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.75rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--dark-blue);
+    margin-bottom: 0.75rem;
+    display: block;
+    letter-spacing: -0.2px;
+}
+
+.form-control {
+    border: 2px solid #e1f5fe;
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    background: var(--white);
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: var(--ocean-blue);
+    box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.15);
+    background: var(--white);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #a0aec0;
+    font-weight: 400;
+}
+
+/* Button Styles */
+.btn-medical {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--dark-blue) 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 1.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    width: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    letter-spacing: -0.2px;
+    margin-top: 0.5rem;
+}
+
+.btn-medical:hover {
+    transform: translateY(-2px);
+    box-shadow:
+            0 8px 20px rgba(0, 119, 190, 0.35),
+            0 4px 8px rgba(0, 119, 190, 0.2);
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #0066a1 100%);
+}
+
+.btn-medical:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 119, 190, 0.3);
+}
+
+/* Footer */
+.medical-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--gray);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    body {
+        padding: 1.5rem 1rem;
+    }
+
+    .card-surface {
+        padding: 2rem 1.75rem;
+        max-width: 100%;
+        margin: 0.25rem 0;
+    }
+
+    .medical-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .medical-icon {
+        font-size: 2.5rem;
+    }
+
+    .medical-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Animation */
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

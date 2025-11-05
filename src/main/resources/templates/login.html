@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Prescription Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="card-surface" role="main" aria-label="Prescription Management Login">
+    <div class="text-center space-y-8">
+        <!-- Header -->
+        <div class="medical-header">
+            <div class="medical-icon">💊</div>
+            <h2>Prescription Management</h2>
+            <p class="medical-subtitle">Secure Medical Access Portal</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <div th:if="${param.logout}" class="alert alert-success" id="logoutAlert">
+            ✅ You have been logged out successfully.
+        </div>
+
+        <div th:if="${param.error}" class="alert alert-error" id="errorAlert">
+            ❌ Invalid username or password. Please try again.
+        </div>
+
+        <!-- Login Form -->
+        <div class="space-y-6">
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           placeholder="Enter your username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn-medical">
+                    🔐 Sign In to System
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="medical-footer">
+            <small>Secure Healthcare Prescription System v1.0</small>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+
+    setTimeout(function() {
+        const errorAlert = document.getElementById('errorAlert');
+        const logoutAlert = document.getElementById('logoutAlert');
+
+        if (errorAlert) errorAlert.style.display = 'none';
+        if (logoutAlert) logoutAlert.style.display = 'none';
+        if (window.location.search) {
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+    }, 3000);
+</script>
+</body>
+</html>
