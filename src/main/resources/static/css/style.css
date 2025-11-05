@@ -23,7 +23,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     overflow: hidden;
 }
 
@@ -36,24 +36,25 @@ body {
             inset 0 1px 0 var(--white);
     padding: 2.5rem 2rem;
     width: 100%;
-    max-width: 380px;
+    max-width: 360px; /* Keep compact size */
     border: 1px solid rgba(176, 224, 230, 0.3);
     animation: cardAppear 0.6s ease-out;
+    margin: 0.5rem 0;
 }
 
 .medical-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .medical-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
     display: block;
 }
 
 .medical-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     font-weight: 600;
     color: var(--dark-blue);
     margin-bottom: 0.5rem;
@@ -61,7 +62,7 @@ body {
 }
 
 .medical-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--gray);
     font-weight: 400;
 }
@@ -70,9 +71,9 @@ body {
 .alert {
     border-radius: 12px;
     padding: 1rem 1.25rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
     border: 1px solid transparent;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 
@@ -94,7 +95,7 @@ body {
 }
 
 .form-group label {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     color: var(--dark-blue);
     margin-bottom: 0.75rem;
@@ -105,7 +106,7 @@ body {
 .form-control {
     border: 2px solid #e1f5fe;
     border-radius: 12px;
-    padding: 1rem 1.25rem;
+    padding: 0.9rem 1.1rem;
     font-size: 1rem;
     font-weight: 400;
     background: var(--white);
@@ -131,8 +132,8 @@ body {
     background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--dark-blue) 100%);
     border: none;
     border-radius: 12px;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.9rem 1.75rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: white;
     width: 100%;
@@ -158,25 +159,26 @@ body {
 /* Footer */
 .medical-footer {
     text-align: center;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     color: var(--gray);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
     body {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .card-surface {
         padding: 2rem 1.75rem;
         max-width: 100%;
+        margin: 0.25rem 0;
     }
 
     .medical-header h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     .medical-icon {
