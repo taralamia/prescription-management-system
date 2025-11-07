@@ -1,0 +1,83 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Prescription Report</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .card-surface--wide { max-width: 1200px; padding: 1.25rem 1rem; }
+        .table-wrapper { overflow-x: auto; background: #fff; border-radius: 8px; box-shadow: 0 0 0 1px rgba(0,0,0,0.02) inset; margin-top: 1rem; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: left; }
+        .table thead th { background: #f8f9fa; font-weight: 600; color: #123; }
+        .count-badge { background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--dark-blue) 100%); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; }
+        .filter-row { display: flex; gap: 0.5rem; align-items: flex-end; width: 100%; margin-bottom: 1rem; }
+        .filter-row label { display: block; }
+        .no-data { text-align: center; padding: 2rem; color: var(--gray); }
+
+        @media (max-width:700px){
+            .filter-row{flex-wrap:wrap;}
+            .card-surface--wide{padding:1rem;margin:0.5rem;}
+        }
+    </style>
+</head>
+<body>
+<div class="card-surface card-surface--wide" role="main" style="margin:2rem auto;">
+    <div class="medical-header">
+        <div class="medical-icon">📊</div>
+        <h2>Prescription Report</h2>
+        <p class="medical-subtitle">Day-wise prescription counts for the selected date range.</p>
+    </div>
+
+    <!-- Date Range Filter -->
+    <form method="get" th:action="@{/prescriptions/report-page}" class="filter-row">
+        <label>
+            <div class="small-muted">Start Date</div>
+            <input type="date" name="start" class="form-control" th:value="${start}" required/>
+        </label>
+        <label>
+            <div class="small-muted">End Date</div>
+            <input type="date" name="end" class="form-control" th:value="${end}" required/>
+        </label>
+        <button type="submit" class="btn-medical" style="min-width: 120px; margin-top: 0;">Generate Report</button>
+        <a th:href="@{/prescriptions}" class="btn-medical btn-cancel" style="min-width: 120px; margin-top: 0; text-decoration: none; text-align: center;">Back to List</a>
+    </form>
+
+    <!-- Report Data -->
+    <div th:if="${report != null and !report.empty}">
+        <div style="margin: 1.5rem 0;">
+            <h3>Prescription Counts from <span th:text="${start}">Start</span> to <span th:text="${end}">End</span></h3>
+            <p>Total days with prescriptions: <strong th:text="${report.size()}">0</strong></p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Prescription Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dayCount : ${report}">
+                    <td th:text="${#temporals.format(dayCount.date, 'MMM dd, yyyy')}">Jan 01, 2025</td>
+                    <td th:text="${#temporals.format(dayCount.date, 'EEEE')}">Monday</td>
+                    <td>
+                        <span class="count-badge" th:text="${dayCount.cnt}">0</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:if="${report != null and report.empty}">
+        <div class="no-data">
+            <h3>No prescriptions found</h3>
+            <p>No prescriptions were created between <span th:text="${start}">start</span> and <span th:text="${end}">end</span>.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.example.prescriptionapp.controller;
 
 import com.example.prescriptionapp.model.Prescription;
+import com.example.prescriptionapp.repository.DateCount;
 import com.example.prescriptionapp.service.interfaces.IPrescriptionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 
@@ -129,5 +131,39 @@ public class PrescriptionController {
         service.deleteByIdForUser(id, username);
         redirectAttributes.addFlashAttribute("success", "Prescription deleted successfully!");
         return "redirect:/prescriptions";
+    }
+    @GetMapping("/report")
+    @ResponseBody
+    public List<DateCount> getPrescriptionReport(
+            Principal principal,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
+    ) {
+        String username = principal.getName();
+        return service.dayWiseCountsForUser(username, start, end);
+    }
+
+    @GetMapping("/report-page")
+    public String showReportPage(
+            Principal principal,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+            Model model
+    ) {
+        String username = principal.getName();
+
+        // Default to current month if no dates provided
+        if (start == null || end == null) {
+            YearMonth ym = YearMonth.now();
+            start = ym.atDay(1);
+            end = ym.atEndOfMonth();
+        }
+
+        List<DateCount> report = service.dayWiseCountsForUser(username, start, end);
+
+        model.addAttribute("report", report);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+        return "prescription-report.html";
     }
 }
