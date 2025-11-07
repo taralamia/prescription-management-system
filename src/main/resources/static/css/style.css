@@ -24,7 +24,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem 1.5rem;
-    overflow: hidden;
+
 }
 
 .card-surface {
@@ -75,6 +75,7 @@ body {
     border: 1px solid transparent;
     font-size: 0.9rem;
     font-weight: 500;
+    animation: fadeOut 4s 2s forwards;
 }
 
 .alert-success {
@@ -155,7 +156,30 @@ body {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(0, 119, 190, 0.3);
 }
+.table-wrapper {
+    overflow-x: auto; /* horizontal scroll */
+    max-width: 100%;
+}
+/*search area */
 
+
+.filter-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.filter-row label { display: block; }
+.filter-row .search-input {
+    flex: 1 1 0;
+    min-width: 140px;
+}
+.filter-row .btn-filter {
+    flex: 0 0 auto;
+    min-width: 100px;
+    padding: 0.45rem 0.8rem;
+}
 /* Footer */
 .medical-footer {
     text-align: center;
@@ -188,6 +212,9 @@ body {
     .medical-subtitle {
         font-size: 0.9rem;
     }
+
+    .filter-row { flex-wrap: wrap; }
+    .filter-row .btn-filter { min-width: 100%; }
 }
 
 /* Animation */
