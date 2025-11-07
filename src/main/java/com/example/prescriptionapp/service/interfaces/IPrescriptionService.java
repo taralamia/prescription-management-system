@@ -18,5 +18,4 @@ public interface IPrescriptionService {
     Page<Prescription> searchByPatientNameForUser(String username, String name, Pageable pageable);
     long countByDateRangeForUser(String username, LocalDate start, LocalDate end);
     List<DateCount> dayWiseCountsForUser(String username, LocalDate start, LocalDate end);
-
 }
