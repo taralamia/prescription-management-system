@@ -1,10 +1,134 @@
 <!doctype html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Prescriptions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .card-surface--wide { max-width: 1200px; padding: 1.25rem 1rem; }
+        .table-wrapper { overflow-x: auto; overflow-y: auto; max-height: 60vh; background: #fff; border-radius: 8px; box-shadow: 0 0 0 1px rgba(0,0,0,0.02) inset; }
+        .table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .table th, .table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: left; vertical-align: top; word-break: break-word; overflow-wrap: anywhere; }
+        .table thead th { position: sticky; top: 0; background: #fff; z-index: 2; font-weight: 600; font-size: 0.95rem; color: #123; }
+        .highlighted-row { animation: highlightFlash 1.6s ease-in-out; }
+        @keyframes highlightFlash { 0% { background: #fff8c6; } 60% { background: #fff8c6; } 100% { background: transparent; } }
+        .filter-row { display: flex; gap: 0.5rem; align-items: flex-end; width: 100%; margin-bottom: 0.75rem; }
+        .filter-row label { display: block; }
+        .filter-row .search-input { flex: 1 1 0; min-width: 140px; }
+        .filter-row .btn-filter { flex: 0 0 auto; min-width: 96px; padding: 0.85rem 0; }
+        @media (max-width:700px){ .filter-row{flex-wrap:wrap;} .filter-row .btn-filter{min-width:100%;} .card-surface--wide{padding:1rem;margin:0.5rem;} }
+    </style>
 </head>
 <body>
-<h1>Prescriptions</h1>
+<div class="card-surface card-surface--wide" role="main" style="margin:2rem auto;">
+    <div class="medical-header">
+        <div class="medical-icon">💊</div>
+        <h2>Prescriptions</h2>
+        <p class="medical-subtitle">Manage your prescriptions — date range, search, and create.</p>
+    </div>
+
+    <!-- Flash messages -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}" style="margin-bottom:1rem;"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}" style="margin-bottom:1rem;"></div>
+
+    <!-- Filter form -->
+    <form method="get" th:action="@{/prescriptions}" class="filter-row" style="margin-bottom:0.75rem;">
+        <label>
+            <div class="small-muted">Start</div>
+            <input type="date" name="start" class="form-control" th:value="${start}" />
+        </label>
+        <label>
+            <div class="small-muted">End</div>
+            <input type="date" name="end" class="form-control" th:value="${end}" />
+        </label>
+        <label style="flex:1">
+            <div class="small-muted">Search patient</div>
+            <input type="text" name="q" class="form-control search-input" placeholder="Patient name" th:value="${q}" />
+        </label>
+        <button type="submit" class="btn-medical btn-filter btn-medical--inline">Filter</button>
+    </form>
+    <hr style="margin:1.25rem 0; border:none; height:1px; background: rgba(0,0,0,0.06)">
+
+    <!-- Prescriptions table -->
+    <div th:if="${prescriptions.content.size() > 0}">
+        <div class="table-wrapper">
+            <table class="table" aria-describedby="prescriptions">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Patient</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Diagnosis</th>
+                    <th>Medicines</th>
+                    <th>Next visit</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${prescriptions.content}" th:attr="id=${'p-' + p.id}">
+                    <td th:text="${p.prescriptionDate}">2025-01-01</td>
+                    <td th:text="${p.patientName}">John Doe</td>
+                    <td th:text="${p.patientAge}">30</td>
+                    <td th:text="${p.patientGender}">MALE</td>
+                    <td th:text="${p.diagnosis}">Diagnosis</td>
+                    <td th:text="${p.medicines}">Medicine</td>
+                    <td th:text="${p.nextVisitDate}">2025-02-01</td>
+                    <td>
+                        <form th:action="@{'/prescriptions/' + ${p.id} + '/delete'}" method="post" class="inline-delete-form" onsubmit="return confirm('Delete this prescription?');">
+                            <button type="submit" class="btn-medical btn-medical--inline" style="padding:0.4rem 0.6rem; font-size:0.85rem;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:if="${prescriptions.content.size() == 0}">
+        <div class="alert alert-info">No prescriptions found.</div>
+    </div>
+
+    <!-- Create prescription form -->
+    <div style="margin-top:1.5rem; background:#fff; padding:1rem; border-radius:12px;">
+        <h3>Create Prescription</h3>
+        <form th:action="@{/prescriptions/create}" method="post">
+            <div class="form-group">
+                <label>Prescription date</label>
+                <input type="date" class="form-control" name="prescriptionDate" required/>
+            </div>
+            <div class="form-group">
+                <label>Patient name</label>
+                <input type="text" class="form-control" name="patientName" required/>
+            </div>
+            <div class="form-group" style="display:flex; gap:0.5rem;">
+                <div style="flex:1">
+                    <label>Age</label>
+                    <input type="number" class="form-control" name="patientAge" min="0" max="150" required/>
+                </div>
+                <div style="width:160px;">
+                    <label>Gender</label>
+                    <select class="form-control" name="patientGender" required>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Diagnosis</label>
+                <textarea class="form-control" name="diagnosis" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Medicines</label>
+                <textarea class="form-control" name="medicines" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Next visit date</label>
+                <input type="date" class="form-control" name="nextVisitDate"/>
+            </div>
+            <button type="submit" class="btn-medical">Create</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
