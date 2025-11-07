@@ -1,6 +1,5 @@
 package com.example.prescriptionapp.controller;
 
-
 import com.example.prescriptionapp.model.Prescription;
 import com.example.prescriptionapp.service.interfaces.IPrescriptionService;
 import jakarta.validation.Valid;
@@ -15,9 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -76,7 +73,34 @@ public class PrescriptionController {
         String username = principal.getName();
 
         if (bindingResult.hasErrors()) {
-            // Collect all validation errors
+            redirectAttributes.addFlashAttribute("error", "Validation failed. Please correct the form.");
+            return "redirect:/prescriptions";
+        }
+
+        service.saveForUser(prescription, username);
+        redirectAttributes.addFlashAttribute("success", "Prescription created successfully!");
+        return "redirect:/prescriptions";
+    }
+
+    @GetMapping("/{id}/edit")
+    @ResponseBody
+    public Prescription getPrescriptionForEdit(Principal principal, @PathVariable Long id) {
+        String username = principal.getName();
+        return service.findByIdForUser(id, username)
+                .orElseThrow(() -> new IllegalArgumentException("Prescription not found with id: " + id));
+    }
+
+    @PostMapping("/{id}/update")
+    public String update(
+            Principal principal,
+            @PathVariable Long id,
+            @Valid @ModelAttribute Prescription prescription,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        String username = principal.getName();
+
+        if (bindingResult.hasErrors()) {
             String errorMessage = bindingResult.getFieldErrors().stream()
                     .map(error -> error.getField() + ": " + error.getDefaultMessage())
                     .collect(Collectors.joining(", "));
@@ -85,14 +109,16 @@ public class PrescriptionController {
         }
 
         try {
+            prescription.setId(id);
             service.saveForUser(prescription, username);
-            redirectAttributes.addFlashAttribute("success", "Prescription created successfully!");
+            redirectAttributes.addFlashAttribute("success", "Prescription updated successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error creating prescription: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error updating prescription: " + e.getMessage());
         }
 
         return "redirect:/prescriptions";
     }
+
     @PostMapping("/{id}/delete")
     public String delete(
             Principal principal,
@@ -104,6 +130,4 @@ public class PrescriptionController {
         redirectAttributes.addFlashAttribute("success", "Prescription deleted successfully!");
         return "redirect:/prescriptions";
     }
-
 }
-
