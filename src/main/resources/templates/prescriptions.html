@@ -66,11 +66,20 @@
         </label>
         <button type="submit" class="btn-medical btn-filter btn-medical--inline">Filter</button>
     </form>
-    <hr style="margin:1.25rem 0; border:none; height:1px; background: rgba(0,0,0,0.06)">
 
+
+    <hr style="margin:1.25rem 0; border:none; height:1px; background: rgba(0,0,0,0.06)">
+    <div style="display:flex; justify-content:center; margin-bottom:0.5rem;">
+        <a th:href="@{/prescriptions/report-page}"
+           style="font-size:1.3rem; text-decoration:none;">
+            📊
+        </a>
+    </div>
     <!-- Prescriptions table -->
     <div th:if="${prescriptions.content.size() > 0}">
+
         <div class="table-wrapper">
+
             <table class="table" aria-describedby="prescriptions">
                 <thead>
                 <tr>
