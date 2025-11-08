@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Drug Interactions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .card-surface--wide { max-width: 1200px; padding: 1.25rem 1rem; }
+        .json-view { background: #f8f9fa; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace; white-space: pre-wrap; }
+        .filter-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .filter-row label { display: block; }
+
+        @media (max-width:700px){
+            .filter-row{ flex-wrap: wrap; }
+            .card-surface--wide{ padding: 1rem; margin: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="card-surface card-surface--wide" role="main" style="margin:2rem auto;">
+    <div class="medical-header">
+        <div class="medical-icon">🔍</div>
+        <h2>Drug Interactions</h2>
+        <p class="medical-subtitle">Check drug interactions using NIH RxNav API</p>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${error}" class="alert alert-error" th:text="${error}" style="margin-bottom:1rem;"></div>
+
+    <!-- Search Form -->
+    <form method="get" th:action="@{/drug-interactions}" class="filter-row">
+        <label style="flex:1">
+            <div class="small-muted">RXCUI (Drug Identifier)</div>
+            <input type="text" name="rxcui" class="form-control" th:value="${rxcui}" placeholder="Enter RXCUI (e.g., 341248)" required/>
+        </label>
+        <button type="submit" class="btn-medical" style="min-width: 120px; margin-top: 0;">Search</button>
+        <a th:href="@{/prescriptions}" class="btn-medical btn-cancel" style="min-width: 120px; margin-top: 0; text-decoration: none; text-align: center;">Back to Prescriptions</a>
+    </form>
+
+    <!-- Raw JSON View -->
+    <div th:if="${prettyJson}" style="margin-top: 2rem;">
+        <h3>Drug Interaction JSON for RXCUI: <span th:text="${rxcui}"></span></h3>
+        <div class="json-view" th:text="${prettyJson}"></div>
+    </div>
+
+    <!-- Initial State Message -->
+    <div th:if="${prettyJson == null and error == null}" class="alert alert-info">
+        Enter a drug RXCUI above to check for interactions.
+    </div>
+</div>
+</body>
+</html>

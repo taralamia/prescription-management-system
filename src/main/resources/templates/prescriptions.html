@@ -29,12 +29,19 @@
         .action-buttons { display: flex; gap: 0.5rem; }
         .btn-small { padding: 0.4rem 0.8rem; font-size: 0.85rem; width: auto; margin-top: 0; }
 
+        /* Icon Navigation */
+        .icon-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 0.5rem; }
+        .nav-icon { font-size: 1.8rem; text-decoration: none; transition: transform 0.2s ease; }
+        .nav-icon:hover { transform: scale(1.1); }
+
         @media (max-width:700px){
             .filter-row{flex-wrap:wrap;}
             .filter-row .btn-filter{min-width:100%;}
             .card-surface--wide{padding:1rem;margin:0.5rem;}
             .action-buttons { flex-direction: column; }
             .btn-small { width: 100%; }
+            .icon-nav { gap: 1.5rem; }
+            .nav-icon { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -67,19 +74,21 @@
         <button type="submit" class="btn-medical btn-filter btn-medical--inline">Filter</button>
     </form>
 
-
     <hr style="margin:1.25rem 0; border:none; height:1px; background: rgba(0,0,0,0.06)">
-    <div style="display:flex; justify-content:center; margin-bottom:0.5rem;">
-        <a th:href="@{/prescriptions/report-page}"
-           style="font-size:1.3rem; text-decoration:none;">
+
+    <!-- Icon Navigation -->
+    <div class="icon-nav">
+        <a th:href="@{/prescriptions/report-page}" class="nav-icon" title="View Prescription Report">
             📊
         </a>
+        <a th:href="@{/drug-interactions}" class="nav-icon" title="Check Drug Interactions">
+            🔍
+        </a>
     </div>
+
     <!-- Prescriptions table -->
     <div th:if="${prescriptions.content.size() > 0}">
-
         <div class="table-wrapper">
-
             <table class="table" aria-describedby="prescriptions">
                 <thead>
                 <tr>
@@ -107,8 +116,6 @@
                             <button type="button" class="btn-medical btn-small btn-edit"
                                     th:onclick="'openEditModal(' + ${p.id} + ')'" title="Edit">
                                 ✏️
-                            </button>
-                            ️
                             </button>
                             <form th:action="@{'/prescriptions/' + ${p.id} + '/delete'}" method="post"
                                   class="inline-delete-form"
@@ -243,7 +250,6 @@
                 document.getElementById('editMedicines').value = data.medicines || '';
                 document.getElementById('editNextVisitDate').value = data.nextVisitDate || '';
 
-
                 const form = document.getElementById('editForm');
                 form.action = '/prescriptions/' + prescriptionId + '/update';
 
@@ -265,11 +271,9 @@
         if (e.target.id === 'editModal') closeEditModal();
     });
 
-
     document.getElementById('editForm').addEventListener('submit', function(e) {
-
+        // Form submission handled by browser
     });
 </script>
-
 </body>
 </html>
