@@ -57,9 +57,9 @@ data.
 
 ## 🚀 Features Implemented
 
--   Secure login (no anonymous users)\
--   Prescription creation, listing, and deletion\
--   Integration with external drug interaction API\
+-   Secure login (no anonymous users)
+-   Prescription creation, listing, and deletion
+-   Integration with external drug interaction API
 -   Interactive frontend using Thymeleaf
 
 ------------------------------------------------------------------------
@@ -68,7 +68,7 @@ data.
 1.  **Clone the repository**
 
     ``` bash
-    git clone https://github.com/yourusername/prescription-system.git
+    git clone https://github.com/taralamia/prescription-system.git
     ```
 
 2.  **Open in IDE** Open the folder in **IntelliJ IDEA** or **Spring
