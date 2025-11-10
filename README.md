@@ -41,10 +41,25 @@ The following ER diagram illustrates the relationship between the `users` and `p
 
 ------------------------------------------------------------------------
 
-## 🌐 REST API Used
+## 🌐 API Documentation
+### Postman Collection
+Import the Postman collection to test all API endpoints:
 
-The application integrates with **RxNav (NIH)** for drug interaction
-data.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://tabassum-712330.postman.co/workspace/1384f57c-f6a0-41e5-826f-10344367a3ee/collection/45337377-001a8f42-4e76-427f-9be8-d05bb030358e?action=share&source=copy-link&creator=45337377)
+
+### Available Endpoints
+
+#### 🔐 Authentication
+- **POST** `/login` - User authentication
+  - Body: `username=admin&password=admipass`
+
+#### 💊 Prescription Management
+- **GET** `/api/v1/prescriptions` - Get paginated prescriptions
+  - Parameters: `page`, `size`, `startDate`, `endDate`
+
+#### 💊 Drug Interactions
+- **GET** `/drug-interactions` - Check drug interactions
+  - Parameters: `rxcui` (e.g., 341248)
 
 **Example endpoint:**
 
